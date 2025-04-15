@@ -456,8 +456,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 358b7d02bf6d740469c568aff8ddae19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spritesP: []
-  spritesE: []
+  spritesP:
+  - {fileID: 21300000, guid: 91200ff38758f8742adcbcd5004789fb, type: 3}
+  spritesE:
+  - {fileID: 21300000, guid: 7083e62cc9638584292609817f1d3d3c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
