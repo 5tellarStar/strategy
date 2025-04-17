@@ -4,7 +4,7 @@ public class Piece : MonoBehaviour
 { 
     private SpriteRenderer spriteRenderer;
 
-    public Vector2 coordinates;
+    public Vector2Int coordinates;
 
     public Faction faction;
 
@@ -12,8 +12,8 @@ public class Piece : MonoBehaviour
 
     public BattleManager battleManager;
 
-
-    public void New(Vector2 coords, Faction fac, PieceBase p, BattleManager batMan)
+    
+    public void New(Vector2Int coords, Faction fac, PieceBase p, BattleManager batMan)
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         battleManager = batMan;
@@ -23,6 +23,11 @@ public class Piece : MonoBehaviour
         piece = p;
 
         spriteRenderer.sprite = fac == Faction.player ? battleManager.GetComponent<SpriteLib>().spritesP[piece.sprite] : battleManager.GetComponent<SpriteLib>().spritesE[piece.sprite];
-        transform.position = new Vector2 (coords.x - 3.5f, 4.8125f - coords.y * 0.75f);
+        transform.position = new Vector3 (coords.x - 3.5f, 4.8125f - coords.y * 0.75f,7-coords.y);
+    }
+
+    private void OnMouseDown()
+    {
+        Debug.Log(coordinates);
     }
 }

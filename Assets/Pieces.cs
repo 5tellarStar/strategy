@@ -1,22 +1,19 @@
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
 
 public class PieceBase
 {
-    protected bool o = false;
-    protected bool f = false;
-    protected bool x = true;
-
     public string name;
 
     public string description;
 
     public int sprite;
 
-    public bool[,] moves;
+    public virtual bool[,] moves(List<Piece> pieces, Vector2Int coords, Faction fac) { return new bool[8, 8]; }
 
-    public bool[,] attacks;
+    public virtual bool[,] attacks(List<Piece> pieces, Vector2Int coords, Faction fac) { return new bool[8, 8]; }
 }
 
 public class Pawn : PieceBase
@@ -28,43 +25,74 @@ public class Pawn : PieceBase
         description = "The weakest piece";
 
         sprite = 0;
+    }
 
-        moves = new bool[17,17]
-       {{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,o,x,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}};
+    public override bool[,] moves(List<Piece> pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleMoves = new bool[8, 8];
 
-        attacks = new bool[17, 17]
-       {{f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,x,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,o,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,x,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f},
-        {f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f,f}};
+        bool spotFree = true;
+        foreach (Piece piece in pieces)
+        {
+            if (piece.coordinates == (coords + (fac == Faction.player ? new Vector2Int(1, 0) : new Vector2Int(-1, 0))))
+            {
+                spotFree = false;
+                break;
+            }
+        }
+        if (spotFree)
+        {
+            possibleMoves[coords.x + (fac == Faction.player ? 1 : -1), coords.y] = true;
+
+            if (coords.x < 2)
+            {
+                foreach (Piece piece in pieces)
+                {
+                    if (piece.coordinates == (coords + (fac == Faction.player ? new Vector2Int(2, 0) : new Vector2Int(-2, 0))))
+                    {
+                        spotFree = false;
+                        break;
+                    }
+                }
+
+                possibleMoves[coords.x + (fac == Faction.player ? 2 : -2), coords.y] = true;
+            }
+        }
+
+        return possibleMoves;
+    }
+    public override bool[,] attacks(List<Piece> pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleAttacks = new bool[8, 8];
+
+        bool spotFree = true;
+        foreach (Piece piece in pieces)
+        {
+            if (piece.coordinates == (coords + (fac == Faction.player ? new Vector2Int(1, 1) : new Vector2Int(-1, 1))) && piece.faction != fac)
+            {
+                spotFree = false;
+                break;
+            }
+        }
+        if (!spotFree)
+        {
+            possibleAttacks[coords.x + (fac == Faction.player ? 1 : -1), coords.y + 1] = true;
+        }
+
+        spotFree = true;
+        foreach (Piece piece in pieces)
+        {
+            if (piece.coordinates == (coords + (fac == Faction.player ? new Vector2Int(1, -1) : new Vector2Int(-1, -1))) && piece.faction != fac)
+            {
+                spotFree = false;
+                break;
+            }
+        }
+        if (!spotFree)
+        {
+            possibleAttacks[coords.x + (fac == Faction.player ? 1 : -1), coords.y - 1] = true;
+        }
+
+        return possibleAttacks;
     }
 }
