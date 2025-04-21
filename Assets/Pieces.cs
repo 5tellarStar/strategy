@@ -405,3 +405,569 @@ public class Knight : PieceBase
         return possibleAttacks;
     }
 }
+
+public class Bishop : PieceBase
+{
+    public Bishop()
+    {
+        name = "Bishop";
+
+        description = "A piece that moves in an X shape";
+
+        sprite = 3;
+    }
+
+    public override bool[,] moves(Piece[,] pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleMoves = new bool[8, 8];
+
+        if (coords.x != 7)
+        {
+            if(coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i,coords.y + i] == null)
+                    {
+                        possibleMoves[coords.x + i, coords.y + i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i, coords.y - i] == null)
+                    {
+                        possibleMoves[coords.x + i, coords.y - i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (coords.x != 0)
+        {
+            if (coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y + i] == null)
+                    {
+                        possibleMoves[coords.x - i, coords.y + i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y - i] == null)
+                    {
+                        possibleMoves[coords.x - i, coords.y - i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    public override bool[,] attacks(Piece[,] pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleAttacks = new bool[8, 8];
+
+        if (coords.x != 7)
+        {
+            if (coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i, coords.y + i] != null)
+                    {
+                        if(pieces[coords.x + i, coords.y + i].faction != fac)
+                            possibleAttacks[coords.x + i, coords.y + i] = true;
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i, coords.y - i] != null)
+                    {
+                        if (pieces[coords.x + i, coords.y - i].faction != fac)
+                            possibleAttacks[coords.x + i, coords.y - i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (coords.x != 0)
+        {
+            if (coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y + i] != null)
+                    {
+                        if (pieces[coords.x - i, coords.y + i].faction != fac)
+                            possibleAttacks[coords.x - i, coords.y + i] = true;
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y - i] != null)
+                    {
+                        if (pieces[coords.x - i, coords.y - i].faction != fac)
+                            possibleAttacks[coords.x - i, coords.y - i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return possibleAttacks;
+    }
+}
+
+public class Queen : PieceBase
+{
+    public Queen()
+    {
+        name = "Queen";
+
+        description = "The most powerful piece that combines the movement of a Rook and Bishop";
+
+        sprite = 4;
+    }
+
+    public override bool[,] moves(Piece[,] pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleMoves = new bool[8, 8];
+
+        if (coords.x != 7)
+        {
+            for (int x = coords.x + 1; x < 8; x++)
+            {
+                if (pieces[x, coords.y] == null)
+                {
+                    possibleMoves[x, coords.y] = true;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        if (coords.x != 0)
+        {
+            for (int x = coords.x - 1; x > -1; x--)
+            {
+                if (pieces[x, coords.y] == null)
+                {
+                    possibleMoves[x, coords.y] = true;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        if (coords.y != 7)
+        {
+            for (int y = coords.y + 1; y < 8; y++)
+            {
+                if (pieces[coords.x, y] == null)
+                {
+                    possibleMoves[coords.x, y] = true;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+        if (coords.y != 0)
+        {
+            for (int y = coords.y - 1; y > -1; y--)
+            {
+                if (pieces[coords.x, y] == null)
+                {
+                    possibleMoves[coords.x, y] = true;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+
+
+        if (coords.x != 7)
+        {
+            if (coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i, coords.y + i] == null)
+                    {
+                        possibleMoves[coords.x + i, coords.y + i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i, coords.y - i] == null)
+                    {
+                        possibleMoves[coords.x + i, coords.y - i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (coords.x != 0)
+        {
+            if (coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y + i] == null)
+                    {
+                        possibleMoves[coords.x - i, coords.y + i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y - i] == null)
+                    {
+                        possibleMoves[coords.x - i, coords.y - i] = true;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    public override bool[,] attacks(Piece[,] pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleAttacks = new bool[8, 8];
+
+        if (coords.x != 7)
+        {
+            for (int x = coords.x + 1; x < 8; x++)
+            {
+                if (pieces[x, coords.y] != null)
+                {
+                    if (pieces[x, coords.y].faction != fac)
+                    {
+                        possibleAttacks[x, coords.y] = true;
+                    }
+                    break;
+                }
+            }
+        }
+        if (coords.x != 0)
+        {
+            for (int x = coords.x - 1; x > -1; x--)
+            {
+                if (pieces[x, coords.y] != null)
+                {
+                    if (pieces[x, coords.y].faction != fac)
+                    {
+                        possibleAttacks[x, coords.y] = true;
+                    }
+                    break;
+                }
+            }
+        }
+        if (coords.y != 7)
+        {
+            for (int y = coords.y + 1; y < 8; y++)
+            {
+                if (pieces[coords.x, y] != null)
+                {
+                    if (pieces[coords.x, y].faction != fac)
+                    {
+                        possibleAttacks[coords.x, y] = true;
+                    }
+                    break;
+                }
+            }
+        }
+        if (coords.y != 0)
+        {
+            for (int y = coords.y - 1; y > -1; y--)
+            {
+                if (pieces[coords.x, y] != null)
+                {
+                    if (pieces[coords.x, y].faction != fac)
+                    {
+                        possibleAttacks[coords.x, y] = true;
+                    }
+                    break;
+                }
+            }
+        }
+
+        if (coords.x != 7)
+        {
+            if (coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i, coords.y + i] != null)
+                    {
+                        if (pieces[coords.x + i, coords.y + i].faction != fac)
+                            possibleAttacks[coords.x + i, coords.y + i] = true;
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && i + coords.x < 8; i++)
+                {
+                    if (pieces[coords.x + i, coords.y - i] != null)
+                    {
+                        if (pieces[coords.x + i, coords.y - i].faction != fac)
+                            possibleAttacks[coords.x + i, coords.y - i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (coords.x != 0)
+        {
+            if (coords.y != 7)
+            {
+                for (int i = 1; i + coords.y < 8 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y + i] != null)
+                    {
+                        if (pieces[coords.x - i, coords.y + i].faction != fac)
+                            possibleAttacks[coords.x - i, coords.y + i] = true;
+                        break;
+                    }
+                }
+            }
+            if (coords.y != 0)
+            {
+                for (int i = 1; coords.y - i > -1 && coords.x - i > -1; i++)
+                {
+                    if (pieces[coords.x - i, coords.y - i] != null)
+                    {
+                        if (pieces[coords.x - i, coords.y - i].faction != fac)
+                            possibleAttacks[coords.x - i, coords.y - i] = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return possibleAttacks;
+    }
+
+}
+
+public class King : PieceBase
+{
+    public King()
+    {
+        name = "King";
+
+        description = "The piece that needs to be protected at all cost";
+
+        sprite = 5;
+    }
+
+    public override bool[,] moves(Piece[,] pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleMoves = new bool[8, 8];
+
+        if (coords.y != 7)
+        {
+            if (pieces[coords.x, coords.y + 1] == null)
+            {
+                possibleMoves[coords.x, coords.y + 1] = true;
+            }
+
+            if (coords.x != 7)
+            {
+                if (pieces[coords.x +1,coords.y + 1] == null)
+                {
+                    possibleMoves[coords.x +1,coords.y +1] = true;
+                }
+            }
+            if(coords.x != 0)
+            {
+                if (pieces[coords.x - 1, coords.y + 1] == null)
+                {
+                    possibleMoves[coords.x - 1, coords.y + 1] = true;
+                }
+            }
+        }
+
+        if (coords.y != 0)
+        {
+            if (pieces[coords.x, coords.y - 1] == null)
+            {
+                possibleMoves[coords.x, coords.y - 1] = true;
+            }
+
+            if (coords.x != 7)
+            {
+                if (pieces[coords.x + 1, coords.y - 1] == null)
+                {
+                    possibleMoves[coords.x + 1, coords.y - 1] = true;
+                }
+            }
+            if (coords.x != 0)
+            {
+                if (pieces[coords.x - 1, coords.y - 1] == null)
+                {
+                    possibleMoves[coords.x - 1, coords.y - 1] = true;
+                }
+            }
+        }
+
+        if(coords.x != 7)
+        {
+            if (pieces[coords.x + 1, coords.y] == null)
+            {
+                possibleMoves[coords.x + 1, coords.y] = true;
+            }
+        }
+
+        if (coords.x != 0)
+        {
+            if (pieces[coords.x - 1, coords.y] == null)
+            {
+                possibleMoves[coords.x - 1, coords.y] = true;
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    public override bool[,] attacks(Piece[,] pieces, Vector2Int coords, Faction fac)
+    {
+        bool[,] possibleAttacks = new bool[8, 8];
+
+        if (coords.y != 7)
+        {
+            if (pieces[coords.x, coords.y + 1] != null)
+            {
+                if (pieces[coords.x,coords.y + 1].faction != fac)
+                possibleAttacks[coords.x, coords.y + 1] = true;
+            }
+
+            if (coords.x != 7)
+            {
+                if (pieces[coords.x + 1, coords.y + 1] != null)
+                {
+                    if (pieces[coords.x + 1, coords.y + 1].faction != fac)
+                        possibleAttacks[coords.x + 1, coords.y + 1] = true;
+                }
+            }
+            if (coords.x != 0)
+            {
+                if (pieces[coords.x - 1, coords.y + 1] != null)
+                {
+                    if (pieces[coords.x - 1, coords.y + 1].faction != fac)
+                        possibleAttacks[coords.x - 1, coords.y + 1] = true;
+                }
+            }
+        }
+
+        if (coords.y != 0)
+        {
+            if (pieces[coords.x, coords.y - 1] != null)
+            {
+                if (pieces[coords.x, coords.y - 1].faction != fac)
+                    possibleAttacks[coords.x, coords.y - 1] = true;
+            }
+
+            if (coords.x != 7)
+            {
+                if (pieces[coords.x + 1, coords.y - 1] != null)
+                {
+                    if (pieces[coords.x + 1, coords.y - 1].faction != fac)
+                        possibleAttacks[coords.x + 1, coords.y - 1] = true;
+                }
+            }
+            if (coords.x != 0)
+            {
+                if (pieces[coords.x - 1, coords.y - 1] != null)
+                {
+                    if (pieces[coords.x - 1, coords.y - 1].faction != fac)
+                        possibleAttacks[coords.x - 1, coords.y - 1] = true;
+                }
+            }
+        }
+
+        if (coords.x != 7)
+        {
+            if (pieces[coords.x + 1, coords.y] != null)
+            {
+                if (pieces[coords.x + 1, coords.y].faction != fac)
+                    possibleAttacks[coords.x + 1, coords.y] = true;
+            }
+        }
+
+        if (coords.x != 0)
+        {
+            if (pieces[coords.x - 1, coords.y] != null)
+            {
+                if (pieces[coords.x - 1, coords.y].faction != fac)
+                    possibleAttacks[coords.x - 1, coords.y] = true;
+            }
+        }
+
+        return possibleAttacks;
+    }
+}

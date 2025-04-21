@@ -5,6 +5,7 @@ public class BattleManager : MonoBehaviour
 {
     [SerializeField] private GameObject piecePrefab;
     [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private GameObject ragdollPrefab;
     [SerializeField] private CursorController cursor;
 
     public bool Playerturn;
@@ -35,7 +36,7 @@ public class BattleManager : MonoBehaviour
         AddPiece(new Vector2Int(0, 2), Faction.player, new Pawn());
         AddPiece(new Vector2Int(1, 0), Faction.enemy, new Pawn());
 
-        AddPiece(new Vector2Int(4,4), Faction.player, new Knight());
+        AddPiece(new Vector2Int(4,5), Faction.player, new King());
     }
     private void AddPiece(Vector2Int coords, Faction fac, PieceBase p)
     {
@@ -101,6 +102,9 @@ public class BattleManager : MonoBehaviour
                     }
                 }
                 pieces[piece.coordinates.x, piece.coordinates.y] = selectedPiece;
+                GameObject ragdoll = Instantiate(ragdollPrefab);
+                ragdoll.transform.position = piece.transform.position;
+                ragdoll.GetComponent<SpriteRenderer>().sprite = piece.faction == Faction.player ? GetComponent<SpriteLib>().spritesPSmall[piece.piece.sprite] : GetComponent<SpriteLib>().spritesESmall[piece.piece.sprite];
                 Destroy(piece.gameObject);
                 selectedPiece.Place(piece.coordinates);
                 cursor.LetGo();

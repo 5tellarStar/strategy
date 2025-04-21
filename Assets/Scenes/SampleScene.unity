@@ -443,6 +443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   piecePrefab: {fileID: 7649844684228377117, guid: 735421e2b7c9fca4abfe5ca089f84c60, type: 3}
   tilePrefab: {fileID: 1356316422907844472, guid: 10180fe800ec44b469732125f5556c36, type: 3}
+  ragdollPrefab: {fileID: 4282675741722728474, guid: 1370f778ae244cf4cabced8f79d7d30d, type: 3}
   cursor: {fileID: 1962521634}
   Playerturn: 1
   selectedPiece: {fileID: 0}
@@ -462,12 +463,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spritesP:
   - {fileID: 21300000, guid: 91200ff38758f8742adcbcd5004789fb, type: 3}
+  - {fileID: 21300000, guid: 11b333dd4ad4d3647abcefe1c63f0e1e, type: 3}
+  - {fileID: 21300000, guid: 818ca63813f1a364ba0038691c5b2731, type: 3}
+  - {fileID: 21300000, guid: f5ebdbb8c174554479ce10f2189991c2, type: 3}
+  - {fileID: 21300000, guid: be85cd6afeb2ec041ae9c438e2105f0a, type: 3}
+  - {fileID: 21300000, guid: d73ba3d20d063c84ba198195efa1fb3e, type: 3}
   spritesE:
   - {fileID: 21300000, guid: 7083e62cc9638584292609817f1d3d3c, type: 3}
+  - {fileID: 21300000, guid: 898d7d207df2d4645a25ba578ec87457, type: 3}
+  - {fileID: 21300000, guid: 06b3941cdf494e34fbdcf99655b80451, type: 3}
+  - {fileID: 21300000, guid: ff95bfe7a8acae84890371bb1ffc87e8, type: 3}
+  - {fileID: 21300000, guid: 7c92b97db2d63304394daabb20c89044, type: 3}
+  - {fileID: 21300000, guid: e9961701f65b630449fe40c615f9003c, type: 3}
   spritesPSmall:
   - {fileID: -815643202699093525, guid: 439ebc7cb938bd742bfb7c30320dec78, type: 3}
+  - {fileID: -5473948902143097960, guid: 439ebc7cb938bd742bfb7c30320dec78, type: 3}
+  - {fileID: 4302425814622554904, guid: 439ebc7cb938bd742bfb7c30320dec78, type: 3}
+  - {fileID: -663851452246402356, guid: 439ebc7cb938bd742bfb7c30320dec78, type: 3}
+  - {fileID: -8792212463948841774, guid: 439ebc7cb938bd742bfb7c30320dec78, type: 3}
+  - {fileID: -8943791271030034299, guid: 439ebc7cb938bd742bfb7c30320dec78, type: 3}
   spritesESmall:
   - {fileID: -7806979797309037254, guid: abf9b00de8081c34b808b038d7aa1548, type: 3}
+  - {fileID: -6092474145219291535, guid: abf9b00de8081c34b808b038d7aa1548, type: 3}
+  - {fileID: 6949231193263834148, guid: abf9b00de8081c34b808b038d7aa1548, type: 3}
+  - {fileID: -464774345569584725, guid: abf9b00de8081c34b808b038d7aa1548, type: 3}
+  - {fileID: -8618988592779645781, guid: abf9b00de8081c34b808b038d7aa1548, type: 3}
+  - {fileID: 5387355193341843209, guid: abf9b00de8081c34b808b038d7aa1548, type: 3}
 --- !u!1 &1962521633
 GameObject:
   m_ObjectHideFlags: 0
