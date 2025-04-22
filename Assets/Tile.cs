@@ -10,4 +10,20 @@ public class Tile : MonoBehaviour
     {
         battleManager.ClickedTile(this);
     }
+
+    private void OnMouseEnter()
+    {
+        if (battleManager.possibleMoves.Contains(this))
+        {
+            spriteRenderer.color = Color.yellow;
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (battleManager.possibleMoves.Contains(this))
+        {
+            spriteRenderer.color = battleManager.selectedColor;
+        }
+    }
 }

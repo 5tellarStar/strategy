@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class Piece : MonoBehaviour
@@ -36,6 +37,21 @@ public class Piece : MonoBehaviour
     {
         battleManager.ClickedPiece(this);
     }
+    private void OnMouseEnter()
+    {
+        if (battleManager.possibleAttacks.Contains(this))
+        {
+            spriteRenderer.color = Color.red;
+        }
+    }
+
+    private void OnMouseExit()
+    {
+        if (battleManager.possibleAttacks.Contains(this))
+        {
+            spriteRenderer.color = battleManager.selectedPColor;
+        }
+    }
 
     public void Grab()
     {
@@ -46,7 +62,7 @@ public class Piece : MonoBehaviour
 
     public void Place(Vector2Int coords)
     {
-        spriteRenderer.sprite = spriteLib.spritesP[piece.sprite];
+        spriteRenderer.sprite = faction == Faction.player ? spriteLib.spritesP[piece.sprite] : spriteLib.spritesE[piece.sprite];
         spriteRenderer.sortingOrder = 1;
         boxCollider.enabled = true;
 

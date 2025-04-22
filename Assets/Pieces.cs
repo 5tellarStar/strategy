@@ -10,6 +10,8 @@ public class PieceBase
 {
     public string name;
 
+    public int value;
+
     public string description;
 
     public int sprite;
@@ -25,6 +27,8 @@ public class Pawn : PieceBase
     {
         name = "Pawn";
 
+        value = 1;
+
         description = "The weakest piece";
 
         sprite = 0;
@@ -34,7 +38,7 @@ public class Pawn : PieceBase
     {
         bool[,] possibleMoves = new bool[8, 8];
 
-        if (coords.x != 7)
+        if (coords.x != (fac == Faction.player ? 7 : 0))
         {
             if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y] == null)
             {
@@ -55,36 +59,30 @@ public class Pawn : PieceBase
     {
         bool[,] possibleAttacks = new bool[8, 8];
 
-        if (coords.y != 7)
+        if (coords.x != (fac == Faction.player ? 7 : 0))
         {
-            if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y + 1] != null)
+            if (coords.y != 7)
             {
-                if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y + 1].faction != fac)
+                if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y + 1] != null)
                 {
-                    possibleAttacks[coords.x + (fac == Faction.player ? 1 : -1), coords.y + 1] = true;
+                    if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y + 1].faction != fac)
+                    {
+                        possibleAttacks[coords.x + (fac == Faction.player ? 1 : -1), coords.y + 1] = true;
+                    }
+                }
+            }
+
+            if (coords.y != 0)
+            {
+                if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y - 1] != null)
+                {
+                    if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y - 1].faction != fac)
+                    {
+                        possibleAttacks[coords.x + (fac == Faction.player ? 1 : -1), coords.y - 1] = true;
+                    }
                 }
             }
         }
-
-        if (coords.y != 0)
-        {
-            if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y - 1] != null)
-            {
-                if (pieces[coords.x + (fac == Faction.player ? 1 : -1), coords.y - 1].faction != fac)
-                {
-                    possibleAttacks[coords.x + (fac == Faction.player ? 1 : -1), coords.y - 1] = true;
-                }
-            }
-        }
-        for (int x = 0; x < 8; x++)
-        {
-            for (int y = 0; y < 8; y++)
-            {
-                if(possibleAttacks[x,y])
-                    Debug.Log(new Vector2Int(x, y));
-            }
-        }
-
         return possibleAttacks;
     }
 }
@@ -94,6 +92,8 @@ public class Rook : PieceBase
     public Rook()
     {
         name = "Rook";
+
+        value = 5;
 
         description = "A powerful piece that moves in a + shape";
 
@@ -235,6 +235,8 @@ public class Knight : PieceBase
     {
         name = "Knight";
 
+        value = 3;
+
         description = "A piece that moves in a L shape able to jump over other pieces";
 
         sprite = 2;
@@ -307,7 +309,7 @@ public class Knight : PieceBase
                     possibleMoves[coords.x - 2, coords.y + 1] = true;
                 }
             }
-            if (coords.x != 0)
+            if (coords.y != 0)
             {
                 if (pieces[coords.x - 2, coords.y - 1] == null)
                 {
@@ -376,7 +378,7 @@ public class Knight : PieceBase
             {
                 if (pieces[coords.x + 2, coords.y - 1] != null)
                 {
-                    if (pieces[coords.x + 2, coords.y - 2].faction != fac)
+                    if (pieces[coords.x + 2, coords.y - 1].faction != fac)
                         possibleAttacks[coords.x + 2, coords.y - 1] = true;
                 }
             }
@@ -411,6 +413,8 @@ public class Bishop : PieceBase
     public Bishop()
     {
         name = "Bishop";
+
+        value = 3;
 
         description = "A piece that moves in an X shape";
 
@@ -557,6 +561,8 @@ public class Queen : PieceBase
     public Queen()
     {
         name = "Queen";
+
+        value = 9;
 
         description = "The most powerful piece that combines the movement of a Rook and Bishop";
 
@@ -819,6 +825,8 @@ public class King : PieceBase
     public King()
     {
         name = "King";
+
+        value = 100;
 
         description = "The piece that needs to be protected at all cost";
 

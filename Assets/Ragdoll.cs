@@ -11,7 +11,7 @@ public class Ragdoll : MonoBehaviour
 
         random = new Vector2(random.x, random.y < 0 ? random.y * -1 : random.y);
 
-        rb.linearVelocity = random * 3;
+        rb.linearVelocity = random * 5;
 
         rb.angularVelocity = Random.Range(0.0f, 360.0f);
 
