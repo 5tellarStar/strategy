@@ -449,6 +449,9 @@ MonoBehaviour:
   selectedPColor: {r: 0.78431374, g: 0, b: 0, a: 1}
   enemy: {fileID: 1424357346}
   Playerturn: 1
+  placingKing: 0
+  lives: 3
+  SpawnArea: 2
   selectedPiece: {fileID: 0}
   possibleMoves: []
   possibleAttacks: []
@@ -521,10 +524,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2678e51bc2db86f4ea50dcedcd5f9d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectAi: 1
+  selectAi: 3
   hand: {fileID: 1529751206}
   handStart: {x: 7, y: 1}
   handSpeed: 2
+  startingPiece:
+  - XXXXXXXX
+  - XXXXXXXX
+  - XXXXXXXX
+  - XXXXXXPX
+  - XXXXXXPK
+  - XXXXXXPX
+  - XXXXXXXX
+  - XXXXXXXX
 --- !u!4 &1424357347
 Transform:
   m_ObjectHideFlags: 0

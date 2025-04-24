@@ -8,9 +8,11 @@ using UnityEngine.U2D;
 
 public class PieceBase
 {
-    public string name;
+    public string name = null;
 
     public int value;
+
+    public int[,] placeValue = new int[8,8];
 
     public string description;
 
@@ -27,7 +29,19 @@ public class Pawn : PieceBase
     {
         name = "Pawn";
 
-        value = 1;
+        value = 100;
+
+        placeValue = new int[8, 8]{
+            { 0, 50, 10, 5, 0, 5, 5, 0},
+            { 0, 50, 10, 5, 0, -5, 10, 0},
+            { 0, 50, 20, 10, 0, -10, 10, 0},
+            { 0, 50, 30, 25, 20, 0, -20, 0},
+            { 0, 50, 30, 25, 20, 0, -20, 0},
+            { 0, 50, 20, 10, 0, -10, 10, 0},
+            { 0, 50, 10, 5, 0, -5, 10, 0},
+            { 0, 50, 10, 5, 0, 5, 5, 0},
+        };
+            
 
         description = "The weakest piece";
 
@@ -93,7 +107,18 @@ public class Rook : PieceBase
     {
         name = "Rook";
 
-        value = 5;
+        value = 500;
+
+        placeValue = new int[8, 8]{
+            { 0, 5, -5, -5, -5, -5, -5, 0},
+            { 0, 10, 0, 0, 0, 0, 0, 0},
+            { 0, 10, 0, 0, 0, 0, 0, 0},
+            { 0, 10, 0, 0, 0, 0, 0, 5},
+            { 0, 10, 0, 0, 0, 0, 0, 5},
+            { 0, 10, 0, 0, 0, 0, 0, 0},
+            { 0, 10, 0, 0, 0, 0, 0, 0},
+            { 0, 5, -5, -5, -5, -5, -5, 0},
+        };
 
         description = "A powerful piece that moves in a + shape";
 
@@ -235,7 +260,18 @@ public class Knight : PieceBase
     {
         name = "Knight";
 
-        value = 3;
+        value = 320;
+
+        placeValue = new int[8, 8]{
+            { -50, -40, -30, -30, -30, -30, -40, -50},
+            { -40, -20, 0, 5, 0, 5, -20, -40},
+            { -30, 0, 10, 15, 15, 10, 0, -30},
+            { -30, 0, 15, 20, 20, 15, 5, -30},
+            { -30, 0, 15, 20, 20, 15, 5, -30},
+            { -30, 0, 10, 15, 15, 10, 0, -30},
+            { -40, -20, 0, 5, 0, 5, -20, -40},
+            { -50, -40, -30, -30, -30, -30, -40, -50},
+        };
 
         description = "A piece that moves in a L shape able to jump over other pieces";
 
@@ -394,7 +430,7 @@ public class Knight : PieceBase
                         possibleAttacks[coords.x - 2, coords.y + 1] = true;
                 }
             }
-            if (coords.x != 0)
+            if (coords.y != 0)
             {
                 if (pieces[coords.x - 2, coords.y - 1] != null)
                 {
@@ -414,7 +450,18 @@ public class Bishop : PieceBase
     {
         name = "Bishop";
 
-        value = 3;
+        value = 330;
+
+        placeValue = new int[8, 8]{
+            { -20, -10, -10, -10, -10, -10, -10, -20},
+            { -10, 0, 0, 5, 0, 10, 5, -10},
+            { -10, 0, 5, 5, 10, 10, 0, -10},
+            { -10, 0, 10, 10, 10, 10, 0, -10},
+            { -10, 0, 10, 10, 10, 10, 0, -10},
+            { -10, 0, 5, 5, 10, 10, 0, -10},
+            { -10, 0, 0, 5, 0, 10, 5, -10},
+            { -20, -10, -10, -10, -10, -10, -10, -20},
+        };
 
         description = "A piece that moves in an X shape";
 
@@ -562,7 +609,18 @@ public class Queen : PieceBase
     {
         name = "Queen";
 
-        value = 9;
+        value = 900;
+
+        placeValue = new int[8, 8]{
+            { -20, -10, -10, -5, -5, -10, -10, -20},
+            { -10, 0, 0, 0, 0, 0, 0, -10},
+            { -10, 0, 5, 5, 5, 5, 0, -10},
+            { -5, 0, 5, 5, 5, 5, 0, -5},
+            { -5, 0, 5, 5, 5, 5, 0, -5},
+            { -10, 0, 5, 5, 5, 5, 0, -10},
+            { -10, 0, 0, 0, 0, 0, 0, -10},
+            { -20, -10, -10, -5, -5, -10, -10, -20},
+        };
 
         description = "The most powerful piece that combines the movement of a Rook and Bishop";
 
@@ -826,7 +884,18 @@ public class King : PieceBase
     {
         name = "King";
 
-        value = 100;
+        value = 20000;
+
+        placeValue = new int[8, 8]{
+            { -30, -30, -30, -30, -20, -10, 20, 20},
+            { -40, -40, -40, -40, -30, -20, 20, 30},
+            { -40, -40, -40, -40, -30, -20, 0, 10},
+            { -50, -50, -50, -50, -40, -20, 0, 0},
+            { -50, -50, -50, -50, -40, -20, 0, 0},
+            { -40, -40, -40, -40, -30, -20, 0, 10},
+            { -40, -40, -40, -40, -30, -20, 20, 30},
+            { -30, -30, -30, -30, -20, -10, 20, 20},
+        };
 
         description = "The piece that needs to be protected at all cost";
 
@@ -896,6 +965,24 @@ public class King : PieceBase
             if (pieces[coords.x - 1, coords.y] == null)
             {
                 possibleMoves[coords.x - 1, coords.y] = true;
+            }
+        }
+
+        if (coords.y == 4 && coords.x == (fac == Faction.player ? 0 : 7))
+        {
+            if (pieces[(fac == Faction.player ? 0 : 7),7] != null && pieces[(fac == Faction.player ? 0 : 7), 6] == null && pieces[(fac == Faction.player ? 0 : 7), 5] == null)
+            {
+                if(pieces[(fac == Faction.player ? 0 : 7), 7].faction == fac && pieces[(fac == Faction.player ? 0 : 7), 7].piece.name == "Rook")
+                {
+                    possibleMoves[(fac == Faction.player ? 0 : 7),6] = true;
+                }
+            }
+            if (pieces[(fac == Faction.player ? 0 : 7), 0] != null && pieces[(fac == Faction.player ? 0 : 7), 1] == null && pieces[(fac == Faction.player ? 0 : 7), 2] == null && pieces[(fac == Faction.player ? 0 : 7), 3] == null)
+            {
+                if (pieces[(fac == Faction.player ? 0 : 7), 0].faction == fac && pieces[(fac == Faction.player ? 0 : 7), 0].piece.name == "Rook")
+                {
+                    possibleMoves[(fac == Faction.player ? 0 : 7), 2] = true;
+                }
             }
         }
 
