@@ -16,18 +16,6 @@ public class BattleManager : MonoBehaviour
     public bool Playerturn = true;
     public bool placingKing = false;
 
-    public int lives = 3;
-    public int SpawnArea = 2;
-    public PieceBase[,] startingPieces = {
-        {null,null,null,new Bishop(),new King(),new Knight(),null,null},
-        {null,null,null,null,new Pawn(),null,null,null},
-        {null,null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null,null},
-        {null,null,null,null,null,null,null,null}
-        };
 
 
     public Piece[,] pieces = new Piece[8, 8];
@@ -45,9 +33,9 @@ public class BattleManager : MonoBehaviour
         {
             for (int y = 0; y < 8; y++)
             {
-                if (startingPieces[x,y] != null)
+                if (GlobalVariables.StartingPieces[x,y] != null)
                 {
-                    AddPiece(new Vector2Int(x, y), Faction.player, startingPieces[x, y]); 
+                    AddPiece(new Vector2Int(x, y), Faction.player, GlobalVariables.StartingPieces[x, y]); 
                 }
                 GameObject tile = Instantiate(tilePrefab);
                 tile.transform.position = new Vector3(x - 3.5f, 3.8125f - y * 0.75f, 0);
@@ -263,17 +251,17 @@ public class BattleManager : MonoBehaviour
         {
             if (pieces[coords.x, coords.y].faction == Faction.player && pieces[coords.x, coords.y].piece.name == "King")
             {
-                if (lives == 0)
+                if (GlobalVariables.Lives == 0)
                 {
 
                 }
                 else
                 {
 
-                    lives--;
+                    GlobalVariables.Lives--;
                     placingKing = true;
 
-                    for (int x = 0; x < SpawnArea; x++)
+                    for (int x = 0; x < GlobalVariables.SpawnArea; x++)
                     {
                         for (int y = 0; y < 8; y++)
                         {
