@@ -244,6 +244,7 @@ public class Board
             }
 
         }
+
         if (alphasPruned.Count != branches.Count)
         {
             for (int i = alphasPruned.Count - 1; i >= 0;i--)
@@ -252,12 +253,21 @@ public class Board
             }
         }
 
+
         result.AddRange(branches);
 
-        for (int i = 0;i < branches.Count;i++)
+        if (branches.Count != 0)
         {
-            if (levelsDeep < depth)
-                result.AddRange(branches[i].Branch(depth));
+            for (int i = 0; i < branches.Count; i++)
+            {
+                if (levelsDeep < depth)
+                    result.AddRange(branches[i].Branch(depth));
+            }
+        }
+        else
+        {
+            levelsDeep = depth;
+            Debug.Log("lost");
         }
         
         return result;

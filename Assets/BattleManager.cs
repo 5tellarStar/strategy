@@ -13,6 +13,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Enemy enemy;
 
 
+    public bool Starting = true;
     public bool Playerturn = true;
     public bool placingKing = false;
 
@@ -56,7 +57,77 @@ public class BattleManager : MonoBehaviour
 
     public void ClickedPiece(Piece piece)
     {
-        if (Playerturn && selectedPiece == null && piece.faction == Faction.player)
+        if (Starting)
+        {
+            if(selectedPiece == null)
+            {
+                selectedPiece = piece;
+                cursor.Grab(piece);
+                piece.Grab();
+
+                for (int x = 0; x < GlobalVariables.SpawnArea; x++)
+                {
+                    for (int y = 0; y < 8; y++)
+                    {
+                        if(pieces[x, y] == null)
+                        {
+                            possibleMoves.Add(tiles[x, y]);
+                        }
+                        else if (pieces[x, y] != null)
+                        {
+                            possibleAttacks.Add(pieces[x, y]);
+                        }
+                    }
+                }
+
+                for (int i = 0; i < possibleMoves.Count; i++)
+                {
+                    possibleMoves[i].spriteRenderer.color = selectedColor;
+                }
+                for (int i = 0; i < possibleAttacks.Count; i++)
+                {
+                    possibleAttacks[i].spriteRenderer.color = selectedPColor; // change color
+                }
+            }
+            else
+            {
+                bool possible = false;
+                foreach (Piece p in possibleAttacks)
+                {
+                    if (p == piece)
+                    {
+                        possible = true;
+                        break;
+                    }
+                }
+
+                if (possible)
+                {
+                    MovePiece(selectedPiece, new Vector2Int(piece.coordinates.x, piece.coordinates.y));
+                    cursor.LetGo();
+                }
+                else
+                {
+                    selectedPiece.Return();
+                    cursor.LetGo();
+                }
+
+                selectedPiece = null;
+
+                for (int x = 0; x < 8; x++)
+                {
+                    for (int y = 0; y < 8; y++)
+                    {
+                        tiles[x, y].spriteRenderer.color = Color.clear;
+                        if (pieces[x, y] != null)
+                            pieces[x, y].spriteRenderer.color = Color.white;
+                    }
+                }
+                possibleMoves = new();
+                possibleAttacks = new();
+            }
+        }
+        else if (Playerturn && selectedPiece == null && piece.faction == Faction.player)
         {
             selectedPiece = piece;
             cursor.Grab(piece);
@@ -173,7 +244,8 @@ public class BattleManager : MonoBehaviour
             {
                 MovePiece(selectedPiece, new Vector2Int(tile.coords.x, tile.coords.y));
                 cursor.LetGo();
-                EnemyTurn();
+                if(!Starting)
+                    EnemyTurn();
             }
             else
             {
@@ -226,7 +298,7 @@ public class BattleManager : MonoBehaviour
 
     public void MovePiece(Piece piece, Vector2Int coords)
     {
-        if (piece.piece.name == "King" && piece.coordinates == new Vector2(piece.faction == Faction.player ? 0 : 7, 4))
+        if (piece.piece.name == "King" && piece.coordinates == new Vector2(piece.faction == Faction.player ? 0 : 7, 4) && !Starting)
         {
             if (coords == new Vector2Int(piece.faction == Faction.player ? 0 : 7, 6))
             {
@@ -282,10 +354,19 @@ public class BattleManager : MonoBehaviour
                     }
                 }
             }
-            GameObject ragdoll = Instantiate(ragdollPrefab);
-            ragdoll.transform.position = pieces[coords.x, coords.y].transform.position;
-            ragdoll.GetComponent<SpriteRenderer>().sprite = pieces[coords.x, coords.y].faction == Faction.player ? GetComponent<SpriteLib>().spritesPSmall[pieces[coords.x, coords.y].piece.sprite] : GetComponent<SpriteLib>().spritesESmall[pieces[coords.x, coords.y].piece.sprite];
-            Destroy(pieces[coords.x, coords.y].gameObject);
+
+            if (Starting)
+            {
+                pieces[piece.coordinates.x,piece.coordinates.y] = pieces[coords.x, coords.y];
+                pieces[piece.coordinates.x, piece.coordinates.y].Place(new Vector2Int(piece.coordinates.x, piece.coordinates.y));
+            }
+            else
+            {
+                GameObject ragdoll = Instantiate(ragdollPrefab);
+                ragdoll.transform.position = pieces[coords.x, coords.y].transform.position;
+                ragdoll.GetComponent<SpriteRenderer>().sprite = pieces[coords.x, coords.y].faction == Faction.player ? GetComponent<SpriteLib>().spritesPSmall[pieces[coords.x, coords.y].piece.sprite] : GetComponent<SpriteLib>().spritesESmall[pieces[coords.x, coords.y].piece.sprite];
+                Destroy(pieces[coords.x, coords.y].gameObject);
+            }
         }
         pieces[coords.x, coords.y] = piece;
         piece.Place(coords);
@@ -295,6 +376,11 @@ public class BattleManager : MonoBehaviour
     {
         Playerturn = false;
         enemy.StartMove();
+    }
+
+    public void StartBattle()
+    {
+        Starting = false;
     }
 }
 
