@@ -132,10 +132,11 @@ public class ShortSightedAI : AIBase
 
 public class MiniMaxAI : AIBase
 {
-    int depth = 3;
+    int depth = 5;
     public override Move calculateMove(Piece[,] pieces)
     {
         Board startingBoard = new Board(pieces,0);
+        startingBoard.faction = Faction.enemy;
 
         Move bestMove = new Move();
         int bestScore = -1000000000;
@@ -161,6 +162,7 @@ public class MiniMaxAI : AIBase
 
 public class Board
 {
+    public Faction faction;
     public int levelsDeep;
     public Board(Piece[,] pieces, int levelsDeep)
     {
@@ -182,7 +184,7 @@ public class Board
     public List<Board> Branch(int depth)
     {
         List<Board> result = new List<Board>();
-        List<Move> moves = AIBase.PossibleMoves(pieces,Faction.enemy);
+        List<Move> moves = AIBase.PossibleMoves(pieces,faction);
 
         int currentValue = BoardValue(Faction.enemy);
 
@@ -218,34 +220,14 @@ public class Board
             branches[i].pieces[moves[i].target.x, moves[i].target.y] = moves[i].piece;
             branches[i].pieces[moves[i].piece.coordinates.x, moves[i].piece.coordinates.y] = null;
 
-
-            Move playerMove = AIBase.BestMove(branches[i].pieces, Faction.player);
-
-            if (playerMove.piece.piece.name == "King" && playerMove.piece.coordinates == new Vector2(playerMove.piece.faction == Faction.player ? 0 : 7, 4))
-            {
-                if (playerMove.target == new Vector2Int(playerMove.piece.faction == Faction.player ? 0 : 7, 6))
-                {
-                    branches[i].pieces[playerMove.piece.faction == Faction.player ? 0 : 7, 5] = branches[i].pieces[playerMove.piece.faction == Faction.player ? 0 : 7, 7];
-                    branches[i].pieces[playerMove.piece.faction == Faction.player ? 0 : 7, 7] = null;
-                }
-                if (playerMove.target == new Vector2Int(playerMove.piece.faction == Faction.player ? 0 : 7, 2))
-                {
-                    branches[i].pieces[playerMove.piece.faction == Faction.player ? 0 : 7, 3] = branches[i].pieces[playerMove.piece.faction == Faction.player ? 0 : 7, 0];
-                    branches[i].pieces[playerMove.piece.faction == Faction.player ? 0 : 7, 0] = null;
-                }
-            }
-
-            branches[i].pieces[playerMove.target.x, playerMove.target.y] = playerMove.piece;
-            branches[i].pieces[playerMove.piece.coordinates.x, playerMove.piece.coordinates.y] = null;
-
-            if (currentValue > branches[i].BoardValue(Faction.enemy))
+            if (currentValue > branches[i].BoardValue(Faction.enemy) && faction == Faction.enemy)
             {
                 alphasPruned.Add(i);
             }
 
         }
 
-        if (alphasPruned.Count != branches.Count)
+        if (alphasPruned.Count != branches.Count && alphasPruned.Count != 0)
         {
             for (int i = alphasPruned.Count - 1; i >= 0;i--)
             {
@@ -260,6 +242,8 @@ public class Board
         {
             for (int i = 0; i < branches.Count; i++)
             {
+                branches[i].faction = faction == Faction.player ? Faction.enemy : Faction.player;
+
                 if (levelsDeep < depth)
                     result.AddRange(branches[i].Branch(depth));
             }
